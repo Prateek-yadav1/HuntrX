@@ -4,7 +4,7 @@ import ClgLogo from '../assets/Clg_10yrLogo.jpeg'
 import { Bell, Megaphone, User } from 'lucide-react'
 const TopBar = () => {
   return (
-    <div className='w-screen sticky bg-white shadow-lg   px-4 py-4 h-fit flex flex-row items-center justify-between'>
+    <div className='w-screen sticky bg-white shadow-lg  px-4 py-4 h-fit flex flex-row items-center justify-between'>
         
       
             <div >
