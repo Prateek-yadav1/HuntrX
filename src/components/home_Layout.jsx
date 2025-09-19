@@ -15,11 +15,11 @@ const Home_Layout = () => {
   }, []);
 
   return (
-    <div className="min-h-screen p-8 max-w-7xl mx-auto">
+    <div className="min-h-screen p-8 max-w-7xl mx-auto scroll-smooth">
       <div className="grid gap-5 grid-cols-[250px_1fr_250px]">
-        <div className="sticky top-16 self-start"><ProfileCard /></div>
+        <div className="sticky top-0 self-start"><ProfileCard /></div>
         <div className="min-w-90"><Feed /></div>
-        <div className="h-fit space-y-4">
+        <div className="h-fit space-y-4 sticky top-0 self-start">
           <Card title="Live Projects" Content={projects} />
 
             <Card title="EWYL" Content={projects} />

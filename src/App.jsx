@@ -9,10 +9,12 @@ import { Routes, Route } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 
+
 const App = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [mongoUserId, setMongoUserId] = useState(null);
   const { user } = useUser();
+  
 
   useEffect(() => {
     if (user) {

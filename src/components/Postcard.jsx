@@ -71,7 +71,7 @@ const PostCard = ({ post, onDelete }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 mb-6 w-full mx-auto">
+    <div className="bg-white shadow-xs rounded-lg p-4 mb-6 w-full mx-auto">
       <div className="flex items-center mb-4">
         <img
           src={post.userAvatar}
