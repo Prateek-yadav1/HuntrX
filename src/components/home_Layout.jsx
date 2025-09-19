@@ -15,7 +15,7 @@ const Home_Layout = () => {
   }, []);
 
   return (
-    <div className="min-h-screen p-8 max-w-7xl mx-auto scroll-smooth">
+    <div className="min-h-screen p-8 max-w-7xl  scroll-smooth">
       <div className="grid gap-5 grid-cols-[250px_1fr_250px]">
         <div className="sticky top-0 self-start"><ProfileCard /></div>
         <div className="min-w-90"><Feed /></div>
