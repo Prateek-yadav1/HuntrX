@@ -18,6 +18,7 @@ export default function Sidebar() {
   const navItems = [
     { icon: <Home size={20} />, label: "Home", to: "/" },
     { icon: <Network size={20} />, label: "My Network", to: "/network" },
+    { icon: <Network size={20} />, label: "Connections", to: "/connections" },
     { icon: <HandCoins size={20} />, label: "EWYL", to: "/ewyl" },
     { icon: <Lightbulb size={20} />, label: "Opportunities", to: "/opportunities" },
     { icon: <MessageCircle size={20} />, label: "Messages", to: "/chat" }, // Link to Chat

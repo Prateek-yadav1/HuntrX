@@ -4,14 +4,15 @@ import Sidebar from "./components/Sidebar";
 import Home_Layout from "./components/home_Layout";
 import Chat from "./components/Chat";
 import ConnectionsPage from "./components/Connection";
+import ConnectionsList from "./components/ConnectionList";
 import { Routes, Route } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [mongoUserId, setMongoUserId] = useState(null);
   const { user } = useUser();
-  const currentUserId = user?.id; // or user?.publicMetadata?.mongoId if you sync Clerk with MongoDB
 
   useEffect(() => {
     if (user) {
@@ -19,6 +20,10 @@ const App = () => {
         name: user.fullName || user.firstName || "User",
         email: user.primaryEmailAddress?.emailAddress,
         avatar: user.imageUrl,
+      }).then(() => {
+        // Now fetch MongoDB user by email
+        axios.get(`http://localhost:5050/api/users?email=${user.primaryEmailAddress?.emailAddress}`)
+          .then(res => setMongoUserId(res.data._id));
       });
     }
   }, [user]);
@@ -32,7 +37,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home_Layout />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/network" element={<ConnectionsPage currentUserId={currentUserId} />} />
+            <Route path="/network" element={<ConnectionsPage currentUserId={mongoUserId} />} />
+            <Route path="/connections" element={<ConnectionsList currentUserId={mongoUserId} />} />
             {/* other routes */}
           </Routes>
         </div>

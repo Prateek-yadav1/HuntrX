@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import User from "./models/User.js";
+import connectionsRouter from "./routes/connections.js";
 
 dotenv.config();
 const app = express();
@@ -38,7 +39,16 @@ const PostSchema = new mongoose.Schema({
   userDesignation: String,
   time: { type: Number, default: Date.now }, // timestamp
   content: String,
-  image: String, // store image as base64 or URL
+  image: String,
+  likes: { type: Number, default: 0 },
+  comments: [
+    {
+      userName: String,
+      userAvatar: String,
+      text: String,
+      time: { type: Number, default: Date.now }
+    }
+  ]
 });
 
 const Post = mongoose.model("Post", PostSchema);
@@ -87,6 +97,23 @@ app.delete("/api/posts/:id", async (req, res) => {
   res.json({ success: true });
 });
 
+// Like a post
+app.post("/api/posts/:id/like", async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  post.likes += 1;
+  await post.save();
+  res.json(post);
+});
+
+// Add a comment
+app.post("/api/posts/:id/comment", async (req, res) => {
+  const { userName, userAvatar, text } = req.body;
+  const post = await Post.findById(req.params.id);
+  post.comments.push({ userName, userAvatar, text, time: Date.now() });
+  await post.save();
+  res.json(post);
+});
+
 // Fetch all projects
 app.get("/api/projects", async (req, res) => {
   const projects = await Project.find();
@@ -111,12 +138,19 @@ app.post("/api/users", async (req, res) => {
 // Fetch all users
 app.get("/api/users", async (req, res) => {
   try {
+    if (req.query.email) {
+      const user = await User.findOne({ email: req.query.email });
+      return res.json(user);
+    }
     const users = await User.find();
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
+// Connection routes
+app.use("/api/connections", connectionsRouter);
 
 const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

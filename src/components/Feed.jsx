@@ -42,6 +42,30 @@ export default function Feed() {
     setPosts([savedPost, ...posts]);
   };
 
+  // Like a post
+  const handleLike = async (postId) => {
+    const res = await fetch(
+      `http://localhost:5050/api/posts/${postId}/like`,
+      { method: "POST" }
+    );
+    const updatedPost = await res.json();
+    setPosts(posts.map((p) => (p._id === postId ? updatedPost : p)));
+  };
+
+  // Add a comment to a post
+  const handleAddComment = async (postId, commentData) => {
+    const res = await fetch(
+      `http://localhost:5050/api/posts/${postId}/comment`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(commentData),
+      }
+    );
+    const updatedPost = await res.json();
+    setPosts(posts.map((p) => (p._id === postId ? updatedPost : p)));
+  };
+
   // Utility to convert image file to base64
   function toBase64(file) {
     return new Promise((resolve, reject) => {
@@ -62,6 +86,7 @@ export default function Feed() {
           key={post._id}
           post={post}
           onDelete={() => handleDeletePost(post._id)}
+          onLike={() => handleLike(post._id)}
         />
       ))}
     </div>
