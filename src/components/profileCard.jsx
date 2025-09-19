@@ -1,10 +1,11 @@
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from "@clerk/clerk-react";
+import { Link } from "react-router-dom";
 import React from "react";
 import ClgLogo from '../assets/Clg_10yrLogo.jpeg'
 import Backdrop from '../assets/backdrop.svg'
 import { Bold, Shield, ShieldCheck } from 'lucide-react';
 export default function ProfileCard() {
-  const { user } = useUser(); // Use Clerk's user object
+  const { user } = useUser(); // Clerk user object
 
   return (
     <div className="  mt-0 bg-white shadow-xs rounded-lg max-h-90  w-full overflow-hidden ">
@@ -16,6 +17,7 @@ export default function ProfileCard() {
       </div> */}
       
       <div className="relative  flex justify-end items-center mb-4 ">
+        <Link to="/profile">
         <img src={Backdrop} alt="" />
         <img
           src={user?.imageUrl || "/api/placeholder/60/60"}
@@ -29,6 +31,7 @@ export default function ProfileCard() {
             }
           }}
         />
+        </Link>
       </div>
 <div className="p-4 mt-9 text-left">
   <div className="flex flex-col justify-start space-y-1/2 mb-4">
