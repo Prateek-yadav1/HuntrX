@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TopBar from "./components/TopBar";
 import Sidebar from "./components/Sidebar";
-import Feed from "./components/Feed";
+import Home_Layout from "./components/home_Layout";
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -12,7 +12,7 @@ const App = () => {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
         <div className="flex-1 overflow-auto p-6 bg-gray-100">
-          <Feed />
+       <Home_Layout/>
         </div>
       </div>
     </div>
