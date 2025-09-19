@@ -93,7 +93,7 @@ export default function Feed() {
   };
 
   return (
-    <div className="p-6 flex flex-col gap-4">
+    <div className="w-full max-w-180 flex flex-col gap-4">
       <AddPostForm onAddPost={handleAddPost} />
 
       {posts.map((post, i) => (

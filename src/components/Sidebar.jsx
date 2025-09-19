@@ -15,7 +15,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="flex w-fit  h-full pr-12">
+    <div className="flex w-fit bg-gray-100 h-full pr-12">
       <div
         className={`h-full bg-white shadow-lg flex flex-col justify-between
         transition-all duration-300 ease-in-out

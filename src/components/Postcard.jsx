@@ -3,7 +3,7 @@ import { Heart, MessageCircle, Share2 } from "lucide-react";
 
 const PostCard = ({ post }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 mb-6 w-full max-w-xl mx-auto">
+    <div className="bg-white shadow-md rounded-lg p-4 mb-6 w-full mx-auto">
       <div className="flex items-center mb-4">
         <img
           src={post.userAvatar}

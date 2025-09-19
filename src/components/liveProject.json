@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "AI Chatbot Assistant",
+    "description": "A chatbot powered by natural language processing for customer support.",
+    "status": "In Progress",
+    "deadline": "2025-10-15"
+  },
+  {
+    "id": 2,
+    "name": "E-Commerce Website",
+    "description": "A full-stack online shopping platform with cart and payment integration.",
+    "status": "Completed",
+    "deadline": "2025-07-22"
+  },
+  {
+    "id": 3,
+    "name": "Weather Forecast App",
+    "description": "A mobile app providing real-time weather updates and alerts.",
+    "status": "In Progress",
+    "deadline": "2025-11-02"
+  },
+  {
+    "id": 4,
+    "name": "Smart Home IoT System",
+    "description": "IoT-based home automation system for lights, fans, and security.",
+    "status": "Pending",
+    "deadline": "2025-12-10"
+  },
+  {
+    "id": 5,
+    "name": "Stock Market Analyzer",
+    "description": "A web tool for AI-driven sentiment and stock trend analysis.",
+    "status": "In Progress",
+    "deadline": "2025-09-30"
+  },
+  {
+    "id": 6,
+    "name": "Fitness Tracker",
+    "description": "Wearable-integrated app for tracking workouts and health stats.",
+    "status": "Completed",
+    "deadline": "2025-06-05"
+  },
+  {
+    "id": 7,
+    "name": "Online Learning Platform",
+    "description": "A platform for hosting and managing online courses and certifications.",
+    "status": "In Progress",
+    "deadline": "2025-10-25"
+  },
+  {
+    "id": 8,
+    "name": "Travel Booking System",
+    "description": "A booking portal for flights, hotels, and rental cars.",
+    "status": "Pending",
+    "deadline": "2025-12-01"
+  },
+  {
+    "id": 9,
+    "name": "Hospital Management Software",
+    "description": "A digital system to manage patients, doctors, and appointments.",
+    "status": "In Progress",
+    "deadline": "2025-11-20"
+  },
+  {
+    "id": 10,
+    "name": "Portfolio Website",
+    "description": "A personal portfolio website showcasing projects and blogs.",
+    "status": "Completed",
+    "deadline": "2025-05-15"
+  }
+]
