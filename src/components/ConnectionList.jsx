@@ -20,8 +20,15 @@ export default function ConnectionsList({ currentUserId }) {
       <h2 className="text-xl font-bold mb-4">Your Connections</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {connections.map(conn => {
+          // Defensive checks for requester and recipient
+          const requester = conn.requester;
+          const recipient = conn.recipient;
+          if (!requester || !recipient) return null; // skip if missing
+
           // Show the other user (not current user)
-          const otherUser = conn.requester._id === currentUserId ? conn.recipient : conn.requester;
+          const otherUser = requester._id === currentUserId ? recipient : requester;
+          if (!otherUser) return null; // skip if missing
+
           return (
             <div key={conn._id} className="bg-white shadow rounded-lg p-2 flex flex-col items-center">
               <img
