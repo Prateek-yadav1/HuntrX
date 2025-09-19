@@ -10,7 +10,7 @@ function timeAgo(timestamp) {
   return `${Math.floor(diff / 86400)} d ago`;
 }
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, onDelete }) => {
   // Unique key for each post (use post.id or similar unique value)
   const postKey = `post-${post.id || post.userName}-${post.time}`;
 
@@ -126,6 +126,7 @@ const PostCard = ({ post }) => {
           <Share2 size={18} />
           <span>Share</span>
         </button>
+
       </div>
 
       {/* --- Comment Section --- */}

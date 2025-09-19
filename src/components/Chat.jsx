@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getMessages, sendMessage } from "../services/api";
+import { useUser } from "@clerk/clerk-react";
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const { user } = useUser();
 
   useEffect(() => {
     async function fetchData() {
@@ -15,7 +17,9 @@ export default function Chat() {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    const newMsg = await sendMessage("Prateek", input);
+    // Use Clerk user info as sender
+    const senderName = user?.fullName || user?.firstName || "User";
+    const newMsg = await sendMessage(senderName, input);
     setMessages([newMsg, ...messages]); // Add to top
     setInput("");
   };

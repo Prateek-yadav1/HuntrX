@@ -1,122 +1,68 @@
 import React, { useState, useEffect } from "react";
 import AddPostForm from "./AddPostForm";
 import PostCard from "./Postcard";
-
 import avatar2 from "../assets/avatar2.jpg";
-import project_screenshot from "../assets/project-screenshot.jpg";
 
-const initialPosts = [
-  {
-    userAvatar: avatar2,
-    userName: "Jane Doe",
-    userDesignation: "Software Engineer at ABC Corp",
-    time: "2h ago",
-    content: "Excited to share my latest project! #React #TailwindCSS",
-    image: project_screenshot,
-  },
-  {
-    userAvatar: avatar2,
-    userName: "John Smith",
-    userDesignation: "Product Manager",
-    time: "1d ago",
-    content: "Great team meeting today, lots of ideas flowing.",
-  },
-  {
-    userAvatar: avatar2,
-    userName: "Jane Doe",
-    userDesignation: "Software Engineer at ABC Corp",
-    time: "2h ago",
-    content: "Excited to share my latest project! #React #TailwindCSS",
-    image: project_screenshot,
-  },
-  {
-    userAvatar: avatar2,
-    userName: "John Smith",
-    userDesignation: "Product Manager",
-    time: "1d ago",
-    content: "Great team meeting today, lots of ideas flowing.",
-  },
-  {
-    userAvatar: avatar2,
-    userName: "John Smith",
-    userDesignation: "Product Manager",
-    time: "1d ago",
-    content: "Great team meeting today, lots of ideas flowing.",
-  },
-  {
-    userAvatar: avatar2,
-    userName: "Jane Doe",
-    userDesignation: "Software Engineer at ABC Corp",
-    time: "2h ago",
-    content: "Excited to share my latest project! #React #TailwindCSS",
-    image: project_screenshot,
-  },
-  {
-    userAvatar: avatar2,
-    userName: "John Smith",
-    userDesignation: "Product Manager",
-    time: "1d ago",
-    content: "Great team meeting today, lots of ideas flowing.",
-  },
-  {
-    userAvatar: avatar2,
-    userName: "John Smith",
-    userDesignation: "Product Manager",
-    time: "1d ago",
-    content: "Great team meeting today, lots of ideas flowing.",
-  },
-  {
-    userAvatar: avatar2,
-    userName: "Jane Doe",
-    userDesignation: "Software Engineer at ABC Corp",
-    time: "2h ago",
-    content: "Excited to share my latest project! #React #TailwindCSS",
-    image: project_screenshot,
-  },
-  {
-    userAvatar: avatar2,
-    userName: "John Smith",
-    userDesignation: "Product Manager",
-    time: "1d ago",
-    content: "Great team meeting today, lots of ideas flowing.",
-  },
-];
-
-const LOCAL_STORAGE_KEY = "huntrx-posts";
+const API_URL = "http://localhost:5050/api/posts";
 
 export default function Feed() {
-  // Load posts from localStorage or fallback to initialPosts
-  const getStoredPosts = () => {
-    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return stored ? JSON.parse(stored) : initialPosts;
-  };
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [posts, setPosts] = useState(getStoredPosts);
-
-  // Save posts to localStorage whenever posts change
+  // Fetch posts from backend
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(posts));
-  }, [posts]);
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+        setLoading(false);
+      });
+  }, []);
 
-  // Add new post and save to localStorage
-  const handleAddPost = (newPost) => {
-    const post = {
-      userAvatar: avatar2,
-      userName: "You",
-      userDesignation: "Member",
-      time: Date.now(), // store timestamp
+  // Add new post
+  const handleAddPost = async (newPost) => {
+    let imageBase64 = "";
+    if (newPost.image) {
+      imageBase64 = await toBase64(newPost.image);
+    }
+    const postData = {
+      userAvatar: newPost.userAvatar,
+      userName: newPost.userName,
+      userDesignation: newPost.userDesignation,
+      time: newPost.time,
       content: newPost.text,
-      image: newPost.image ? URL.createObjectURL(newPost.image) : undefined,
-      id: Date.now(),
+      image: imageBase64,
     };
-    setPosts([post, ...posts]);
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(postData),
+    });
+    const savedPost = await res.json();
+    setPosts([savedPost, ...posts]);
   };
+
+  // Utility to convert image file to base64
+  function toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="w-full max-w-180 flex flex-col gap-4">
       <AddPostForm onAddPost={handleAddPost} />
-      {posts.map((post, i) => (
-        <PostCard key={post.id || i} post={post} />
+      {posts.map((post) => (
+        <PostCard
+          key={post._id}
+          post={post}
+          onDelete={() => handleDeletePost(post._id)}
+        />
       ))}
     </div>
   );
