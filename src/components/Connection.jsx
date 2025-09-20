@@ -59,8 +59,9 @@ export default function ConnectionsPage({ currentUserId }) {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       {/* Suggested Connections */}
-       <h1 className="text-3xl font-extrabold mb-10 text-slate-700">
-People You May Know</h1>
+      <h1 className="text-3xl font-extrabold mb-10 text-slate-700">
+        People You May Know
+      </h1>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         {users
           .filter((u) => {
@@ -100,12 +101,28 @@ People You May Know</h1>
               />
             );
           })}
+        {/* Show message if no suggestions */}
+        {users.filter((u) => {
+          if (u._id === currentUserId) return false;
+          const isConnected = connections.some(
+            (c) =>
+              c.status === "accepted" &&
+              ((c.requester?._id === currentUserId && c.recipient?._id === u._id) ||
+                (c.recipient?._id === currentUserId && c.requester?._id === u._id))
+          );
+          return !isConnected;
+        }).length === 0 && (
+          <div className="col-span-full text-center text-gray-500 py-10">
+            No suggestions at the moment.
+          </div>
+        )}
       </div>
 
       {/* Connection Requests */}
- <h1 className="text-3xl font-extrabold mb-10  text-slate-700 mt-20">
-Connection Requests</h1>      
-<div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      <h1 className="text-3xl font-extrabold mb-10 text-slate-700 mt-20">
+        Connection Requests
+      </h1>
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         {connections
           .filter((c) => c.status === "pending" && c.recipient?._id === currentUserId)
           .map((req) => (
@@ -122,6 +139,12 @@ Connection Requests</h1>
               }
             />
           ))}
+        {/* Show message if no requests */}
+        {connections.filter((c) => c.status === "pending" && c.recipient?._id === currentUserId).length === 0 && (
+          <div className="col-span-full text-center text-gray-500 py-10">
+            No connection requests.
+          </div>
+        )}
       </div>
     </div>
   );

@@ -56,7 +56,7 @@ export default function Profile() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold text-blue-900 mb-4">Education</h2>
             <p className="text-gray-700">
-              B.Tech in Computer Science — XYZ University (2022–2026)
+              B.Tech in Computer Science — BML Munjal University (2023–2027)
             </p>
           </div>
 
