@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { ShieldCheck } from "lucide-react";
 
 export default function ConnectionsPage({ currentUserId }) {
   const [users, setUsers] = useState([]);
@@ -7,94 +8,119 @@ export default function ConnectionsPage({ currentUserId }) {
 
   useEffect(() => {
     axios.get("http://localhost:5050/api/users").then((res) => setUsers(res.data));
-    axios.get(`http://localhost:5050/api/connections/${currentUserId}`).then((res) => setConnections(res.data));
+    axios
+      .get(`http://localhost:5050/api/connections/${currentUserId}`)
+      .then((res) => setConnections(res.data));
   }, [currentUserId]);
 
   const sendRequest = async (recipientId) => {
     await axios.post(`http://localhost:5050/api/connections/request/${recipientId}`, {
-      userId: currentUserId
+      userId: currentUserId,
     });
-    // Refresh connections after sending request
     const res = await axios.get(`http://localhost:5050/api/connections/${currentUserId}`);
     setConnections(res.data);
-    alert("Request sent!");
   };
 
   const acceptRequest = async (requestId) => {
     await axios.post(`http://localhost:5050/api/connections/accept/${requestId}`);
-    // Refresh connections after accepting request
     const res = await axios.get(`http://localhost:5050/api/connections/${currentUserId}`);
     setConnections(res.data);
-    alert("Request accepted!");
   };
 
+  // Reusable portrait-style card
+  const UserCard = ({ user, actionBtn }) => (
+    <div className="flex flex-col bg-white rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition overflow-hidden h-80 w-70">
+      {/* Banner */}
+      <div className="h-24 bg-gray-100 relative">
+        <img
+          src={user?.avatar || "/default-avatar.png"}
+          alt={user?.name}
+          className="absolute w-20 h-20 rounded-full border-4 border-white left-1/2 -translate-x-1/2 -bottom-10 object-cover shadow-md"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 flex flex-col items-center px-4 pt-14 pb-4 text-center">
+        <div className="flex items-center justify-center gap-1">
+          <h3 className="text-lg font-semibold text-gray-800">{user?.name}</h3>
+          <ShieldCheck className="h-4 w-4 text-gray-600" />
+        </div>
+        <p className="text-sm text-gray-500 mt-1 break-words">{user?.email}</p>
+
+        {/* Spacer to push button down */}
+        <div className="flex-1" />
+
+        {/* Action button */}
+        <div className="w-full">{actionBtn}</div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">People You May Know</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="p-6 max-w-6xl mx-auto">
+      {/* Suggested Connections */}
+       <h1 className="text-3xl font-extrabold mb-10 text-slate-700">
+People You May Know</h1>
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         {users
-          .filter(u => {
-            // Don't show yourself
+          .filter((u) => {
             if (u._id === currentUserId) return false;
-            // Don't show users already connected
             const isConnected = connections.some(
-              c =>
+              (c) =>
                 c.status === "accepted" &&
-                ((c.requester && c.requester._id === currentUserId && c.recipient && c.recipient._id === u._id) ||
-                 (c.recipient && c.recipient._id === currentUserId && c.requester && c.requester._id === u._id))
+                ((c.requester?._id === currentUserId && c.recipient?._id === u._id) ||
+                  (c.recipient?._id === currentUserId && c.requester?._id === u._id))
             );
             return !isConnected;
           })
-          .map(user => {
+          .map((user) => {
             const alreadyRequested = connections.some(
-              c =>
-                c.requester &&
-                c.recipient &&
-                c.requester._id === currentUserId &&
-                c.recipient._id === user._id &&
+              (c) =>
+                c.requester?._id === currentUserId &&
+                c.recipient?._id === user._id &&
                 c.status === "pending"
             );
             return (
-              <div key={user._id} className="bg-white shadow rounded-lg p-2 flex flex-col items-center">
-                <img
-                  src={user.avatar || "/default-avatar.png"}
-                  alt={user.name}
-                  className="w-12 h-12 rounded-full mb-2 object-cover"
-                />
-                <div className="text-base font-semibold">{user.name}</div>
-                <div className="text-xs text-gray-500">{user.email}</div>
-                <button
-                  onClick={() => sendRequest(user._id)}
-                  className={`mt-2 px-3 py-1 text-sm rounded ${alreadyRequested ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"}`}
-                  disabled={alreadyRequested}
-                >
-                  {alreadyRequested ? "Request Sent" : "Connect"}
-                </button>
-              </div>
+              <UserCard
+                key={user._id}
+                user={user}
+                actionBtn={
+                  <button
+                    onClick={() => sendRequest(user._id)}
+                    disabled={alreadyRequested}
+                    className={`mt-2 w-full py-2 text-sm rounded-md font-medium transition ${
+                      alreadyRequested
+                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                        : "bg-blue-600 text-white hover:bg-blue-700"
+                    }`}
+                  >
+                    {alreadyRequested ? "Request Sent" : "Connect"}
+                  </button>
+                }
+              />
             );
           })}
       </div>
 
-      <h2 className="text-xl font-bold mt-6 mb-4">Connection Requests</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {/* Connection Requests */}
+ <h1 className="text-3xl font-extrabold mb-10  text-slate-700 mt-20">
+Connection Requests</h1>      
+<div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         {connections
-          .filter(c => c.status === "pending" && c.recipient && c.recipient._id === currentUserId)
-          .map(req => (
-            <div key={req._id} className="bg-gray-100 shadow rounded-lg p-2 flex flex-col items-center">
-              <img
-                src={req.requester?.avatar || "/default-avatar.png"}
-                alt={req.requester?.name}
-                className="w-12 h-12 rounded-full mb-2 object-cover"
-              />
-              <div className="text-base font-semibold">{req.requester?.name}</div>
-              <div className="text-xs text-gray-500">{req.requester?.email}</div>
-              <button
-                onClick={() => acceptRequest(req._id)}
-                className="mt-2 bg-green-600 text-white px-3 py-1 text-sm rounded hover:bg-green-700"
-              >
-                Accept
-              </button>
-            </div>
+          .filter((c) => c.status === "pending" && c.recipient?._id === currentUserId)
+          .map((req) => (
+            <UserCard
+              key={req._id}
+              user={req.requester}
+              actionBtn={
+                <button
+                  onClick={() => acceptRequest(req._id)}
+                  className="mt-2 w-full bg-green-600 text-white py-2 text-sm rounded-md font-medium hover:bg-green-700 transition"
+                >
+                  Accept
+                </button>
+              }
+            />
           ))}
       </div>
     </div>

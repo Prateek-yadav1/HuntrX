@@ -1,48 +1,74 @@
-import React from 'react'
-import Logo from '../assets/Logo.svg'
-import ClgLogo from '../assets/Clg_10yrLogo.jpeg'
-import { Bell, Megaphone } from 'lucide-react'
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react'
+import React from "react";
+import Logo from "../assets/Logo.svg";
+import ClgLogo from "../assets/Clg_10yrLogo.jpeg";
+import { Bell, Megaphone } from "lucide-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 const TopBar = () => {
   return (
-    <div className='w-screen sticky bg-white shadow-lg px-4 py-4 h-fit flex flex-row items-center justify-between'>
-      <div>
-        <img src={Logo} alt="#" className='h-8' />
-      </div>
-
-      <div className="flex items-center gap-6">
-        {/* Announcements */}
-        <div className="flex items-center justify-center">
-          <Megaphone className='h-5 w-5' color='#28282B'/>
+    <header className="w-full sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+      <div className="max-w-8xl mx-auto px-6 py-3 flex items-center justify-between">
+        {/* Left: Logo */}
+        <div className="flex items-center gap-3">
+          <img src={Logo} alt="Main Logo" className="h-9" />
         </div>
 
-        {/* Notifications */}
-        <div className="flex items-center justify-center">
-          <Bell className='h-5 w-5' color='#28282B'/>
-        </div>
+        {/* Right Section */}
+        <div className="flex items-center gap-6">
+          {/* Announcements */}
+          <button
+            className="relative p-2 rounded-full hover:bg-gray-100 transition"
+            aria-label="Announcements"
+          >
+            <Megaphone className="h-5 w-5 text-gray-700" />
+          </button>
 
-        {/* College Logo + Name */}
-        <div className='flex items-center justify-around gap-1'>
-          <img src={ClgLogo} alt="College Logo" className='h-8' />
-          <span className='text-sm font-semibold'>BML Munjal University</span>  
-        </div>
+          {/* Notifications */}
+          <button
+            className="relative p-2 rounded-full hover:bg-gray-100 transition"
+            aria-label="Notifications"
+          >
+            <Bell className="h-5 w-5 text-gray-700" />
+            {/* Example notification dot */}
+            <span className="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-500"></span>
+          </button>
 
-        {/* Clerk Authentication */}
-        <SignedOut>
-          <SignInButton mode="redirect" redirectUrl="/sign-in">
-            <span className="cursor-pointer text-sm font-semibold text-blue-600 hover:underline">
-              Sign In
+          {/* Divider */}
+          <div className="w-px h-6 bg-gray-200"></div>
+
+          {/* College Logo + Name */}
+          <div className="hidden md:flex items-center gap-2">
+            <img
+              src={ClgLogo}
+              alt="College Logo"
+              className="h-7 w-7 rounded-full object-cover"
+            />
+            <span className="text-sm font-medium text-gray-800 whitespace-nowrap">
+              BML Munjal University
             </span>
-          </SignInButton>
-        </SignedOut>
+          </div>
 
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+          {/* Auth */}
+          <SignedOut>
+            <SignInButton mode="redirect" redirectUrl="/sign-in">
+              <span className="cursor-pointer text-sm font-semibold text-blue-600 hover:underline">
+                Sign In
+              </span>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+        </div>
       </div>
-    </div>
-  )
-}
+    </header>
+  );
+};
 
-export default TopBar
+export default TopBar;

@@ -9,12 +9,6 @@ export default function ProfileCard() {
 
   return (
     <div className="  mt-0 bg-white shadow-xs rounded-lg max-h-90  w-full overflow-hidden ">
-      {/* Header */}
-      {/* <div className="absolute">
-        <span className="text-lg font-semibold text-center text-black mt-2 ml-4">
-          Profile
-        </span>
-      </div> */}
       
       <div className="relative  flex justify-end items-center mb-4 ">
         <Link to="/profile">
@@ -27,7 +21,7 @@ export default function ProfileCard() {
             const target = e.target;
             if (target && target instanceof HTMLImageElement) {
               target.src =
-                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='%23a855f7'%3E%3Cpath d='M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z'/%3E%3C/svg%3E";
+                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z'/%3E%3C/svg%3E";
             }
           }}
         />
@@ -66,3 +60,4 @@ export default function ProfileCard() {
     </div>
   );
 }
+

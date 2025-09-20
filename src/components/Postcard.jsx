@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
+import { useUser } from "@clerk/clerk-react";
 
 function timeAgo(timestamp) {
   const now = Date.now();
@@ -11,6 +12,8 @@ function timeAgo(timestamp) {
 }
 
 const PostCard = ({ post, onDelete }) => {
+  const { user } = useUser();
+
   // Unique key for each post (use post.id or similar unique value)
   const postKey = `post-${post.id || post.userName}-${post.time}`;
 
@@ -60,7 +63,13 @@ const PostCard = ({ post, onDelete }) => {
     if (!newComment.trim()) return;
     setData((prev) => ({
       ...prev,
-      comments: [...prev.comments, newComment],
+      comments: [
+        ...prev.comments,
+        {
+          text: newComment,
+          userName: user?.fullName || user?.firstName || "User",
+        },
+      ],
     }));
     setNewComment("");
   };
@@ -140,7 +149,8 @@ const PostCard = ({ post, onDelete }) => {
                   key={i}
                   className="bg-gray-100 px-3 py-2 rounded-md text-sm text-gray-700"
                 >
-                  {c}
+                  <span className="font-semibold">{c.userName}: </span>
+                  {c.text}
                 </div>
               ))}
             </div>

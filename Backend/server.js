@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import User from "./models/User.js";
 import connectionsRouter from "./routes/connections.js";
+import messagesRouter from "./routes/messages.js";
 
 dotenv.config();
 const app = express();
@@ -64,19 +65,11 @@ const Project = mongoose.model("Project", ProjectSchema);
 // Routes
 app.get("/", (req, res) => res.send("API running ✅"));
 
-// Fetch all messages
-app.get("/api/messages", async (req, res) => {
-  const messages = await Message.find().sort({ timestamp: -1 });
-  res.json(messages);
-});
+// Connection routes
+app.use("/api/connections", connectionsRouter);
 
-// Add a new message
-app.post("/api/messages", async (req, res) => {
-  const { sender, content } = req.body;
-  const newMsg = new Message({ sender, content });
-  await newMsg.save();
-  res.json(newMsg);
-});
+// Message routes
+app.use("/api/messages", messagesRouter);
 
 // Fetch all posts
 app.get("/api/posts", async (req, res) => {
@@ -148,9 +141,6 @@ app.get("/api/users", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// Connection routes
-app.use("/api/connections", connectionsRouter);
 
 const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

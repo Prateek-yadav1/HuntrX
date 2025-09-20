@@ -5,6 +5,8 @@ import Card from '../ui/Card';
 const PROJECT_API_URL = "http://localhost:5050/api/projects";
 
 import ProfileCard from './profileCard'
+import CardLP from '../ui/CardLP';
+import LiveProjectsList from '../ui/liveProjects';
 const Home_Layout = () => {
   const [projects, setProjects] = useState([]);
 
@@ -17,11 +19,14 @@ const Home_Layout = () => {
   return (
     <div className="min-h-screen p-8 flex flex-col w-full items-center  scroll-smooth">
       <div className="grid gap-5 grid-cols-[250px_1fr_250px]">
-        <div className="sticky top-0 self-start"><ProfileCard /></div>
+        <div className="sticky top-4 self-start flex flex-col items-center space-y-4"><ProfileCard />
+         <LiveProjectsList title="Live Projects"/>
+        </div>
+       
         <div className="min-w-90"><Feed /></div>
-        <div className="h-fit space-y-4 sticky top-0 self-start">
-          <Card title="Live Projects" Content={projects} />
-
+        <div className="h-fit space-y-4 sticky top-4 self-start">
+          <Card title="Latest Opportunities" Content={projects} />
+          
             <Card title="EWYL" Content={projects} />
           
         </div>
