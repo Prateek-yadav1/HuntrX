@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AddPostForm from "./AddPostForm";
 import PostCard from "./Postcard";
 import avatar2 from "../assets/avatar2.jpg";
+import SkeletonPost, { SkeletonAddPost } from "./Skeleton";
 
 const API_URL = "http://localhost:5050/api/posts";
 
@@ -76,7 +77,16 @@ export default function Feed() {
     });
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="w-full max-w-180 flex flex-col gap-4">
+        <SkeletonAddPost />
+        <SkeletonPost />
+        <SkeletonPost />
+        <SkeletonPost />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-180 flex flex-col gap-4">

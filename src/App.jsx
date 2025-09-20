@@ -46,6 +46,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home_Layout />} />
             <Route path="/chat" element={<Chat currentUserId={mongoUserId} />} />
+            <Route path="/chat/:userId" element={<Chat currentUserId={mongoUserId} />} />
             <Route path="/network" element={<ConnectionsPage currentUserId={mongoUserId} />} />
             <Route path="/connections" element={<ConnectionsList currentUserId={mongoUserId} />} />
             <Route path="/opportunities" element={<Opportunities />} />

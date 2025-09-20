@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
+import { useParams } from "react-router-dom";
 
 export default function Chat({ currentUserId }) {
+  const { userId } = useParams();
   const [connections, setConnections] = useState([]);
   const [selectedConnection, setSelectedConnection] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -32,6 +34,23 @@ export default function Chat({ currentUserId }) {
     }
   }, [selectedConnection, currentUserId]);
 
+  // Set selected connection based on URL param
+  useEffect(() => {
+    if (connections.length && userId) {
+      const found = connections
+        .map((conn) => {
+          if (!conn.requester || !conn.recipient) return null;
+          const otherUser =
+            conn.requester._id === currentUserId
+              ? conn.recipient
+              : conn.requester;
+          return otherUser;
+        })
+        .find((u) => u && u._id === userId);
+      if (found) setSelectedConnection(found);
+    }
+  }, [connections, userId, currentUserId]);
+
   // Send message
   const handleSend = async () => {
     if (!input.trim() || !selectedConnection) return;
@@ -52,9 +71,9 @@ export default function Chat({ currentUserId }) {
   };
 
   return (
-    <div className="flex max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden h-[500px]">
+    <div className="flex max-w-5xl mx-auto mt-5 bg-white rounded-xl shadow-lg overflow-hidden h-[700px]">
       {/* Connections Sidebar */}
-      <div className="w-1/3 bg-gray-50 border-r p-4 overflow-y-auto">
+      <div className="w-1/3 bg-gray-50 border-r border-gray-300 p-4 overflow-y-auto">
         <h2 className="text-lg font-bold mb-4">Your Connections</h2>
         {connections.length === 0 ? (
           <div className="text-gray-500">No connections yet.</div>
@@ -71,7 +90,7 @@ export default function Chat({ currentUserId }) {
               return (
                 <li
                   key={otherUser._id}
-                  className={`flex items-center gap-3 p-2 rounded cursor-pointer mb-2 hover:bg-blue-100 ${
+                  className={`flex items-center gap-3 p-2 rounded-xl cursor-pointer mb-2 hover:bg-blue-100 ${
                     selectedConnection &&
                     selectedConnection._id === otherUser._id
                       ? "bg-blue-200"
@@ -134,9 +153,9 @@ export default function Chat({ currentUserId }) {
         </div>
         {/* Input */}
         {selectedConnection && (
-          <div className="p-4 border-t flex">
+          <div className="p-4 border-t border-gray-300 flex">
             <input
-              className="flex-1 border p-2 rounded-l"
+              className="flex-1 border border-gray-300 p-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message..."

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function ConnectionsList({ currentUserId }) {
   const [connections, setConnections] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentUserId) {
@@ -19,8 +21,9 @@ export default function ConnectionsList({ currentUserId }) {
 
   return (
     <div className="p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
- <h1 className="text-3xl font-extrabold mb-10  text-slate-700">
-Your Connections</h1>   
+      <h1 className="text-3xl font-extrabold mb-10  text-slate-700">
+        Your Connections
+      </h1>
       {connections.length === 0 ? (
         <div className="text-gray-500 text-center py-6">
           You don’t have any connections yet.
@@ -61,7 +64,10 @@ Your Connections</h1>
 
                   <div className="flex-1" />
 
-                  <button className="mt-2 w-full flex items-center justify-center gap-2 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                  <button
+                    className="mt-2 w-full flex items-center justify-center gap-2 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                    onClick={() => navigate(`/chat/${otherUser._id}`)}
+                  >
                     <MessageCircle size={16} />
                     Message
                   </button>

@@ -99,18 +99,18 @@ export default function Profile() {
             <div className="space-y-2">
               <div>
                 <p className="font-medium text-gray-800">
-                  Project A — Mentored by John Doe
+                  Blockchain Voting System — Mentored by Prof. Neha Kapoor
                 </p>
                 <p className="text-gray-600 text-sm">
-                  A web app for real-time collaboration.
+                  A web app for real-time voting system.
                 </p>
               </div>
               <div>
                 <p className="font-medium text-gray-800">
-                  Project B — Mentored by Jane Smith
+                  AI Chatbot for Healthcare — Mentored by Dr. Rohan Mehta
                 </p>
                 <p className="text-gray-600 text-sm">
-                  AI-powered task automation platform.
+                  AI-powered healthcare monitoring system.
                 </p>
               </div>
             </div>
