@@ -24,14 +24,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("✅ MongoDB Connected"))
 .catch(err => console.log("❌ MongoDB Error:", err));
 
-// Example Schema
-const MessageSchema = new mongoose.Schema({
-  sender: String,
-  content: String,
-  timestamp: { type: Date, default: Date.now },
-});
 
-const Message = mongoose.model("Message", MessageSchema);
 
 // New Post Schema
 const PostSchema = new mongoose.Schema({

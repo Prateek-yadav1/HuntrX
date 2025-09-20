@@ -61,10 +61,13 @@ export default function Chat({ currentUserId }) {
         ) : (
           <ul>
             {connections.map((conn) => {
+              // Defensive checks
+              if (!conn.requester || !conn.recipient) return null;
               const otherUser =
                 conn.requester._id === currentUserId
                   ? conn.recipient
                   : conn.requester;
+              if (!otherUser || !otherUser._id) return null;
               return (
                 <li
                   key={otherUser._id}

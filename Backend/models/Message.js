@@ -8,4 +8,5 @@ const MessageSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now }
 });
 
-export default mongoose.model("Message", MessageSchema);
+// Only create the model if it doesn't already exist
+export default mongoose.models.Message || mongoose.model("Message", MessageSchema);
